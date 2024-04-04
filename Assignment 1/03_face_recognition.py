@@ -3,16 +3,16 @@ import numpy as np
 import os 
 
 recognizer = cv2.face.LBPHFaceRecognizer_create()
-recognizer.read('trainer/trainer.yml')
-cascadePath = "haarcascade_frontalface_default.xml"
+recognizer.read(r"C:\Users\Bryan\Desktop\trainer.yml")
+cascadePath = r"C:\Users\Bryan\Desktop\EE4208 Assignment 1\EE4208-Assignment\Assignment 1\haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascadePath);
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 
-#iniciate id counter
+#initiate id counter
 id = 0
 
-# names related to ids: example ==> Marcelo: id=1,  etc
+# names related to ids
 names = ['None', 'Kenneth', 'Bryan', 'PeiQi', 'Karen', 'W'] 
 
 # Initialize and start realtime video capture
@@ -42,8 +42,9 @@ while True:
         cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)
 
         id, confidence = recognizer.predict(gray[y:y+h,x:x+w])
+        print(id)
 
-        # Check if confidence is less them 100 ==> "0" is perfect match 
+        # Check if confidence is less than 100 ==> "0" is perfect match 
         if (confidence < 100):
             id = names[id]
             confidence = "  {0}%".format(round(100 - confidence))

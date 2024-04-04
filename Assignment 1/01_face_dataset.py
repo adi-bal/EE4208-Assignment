@@ -1,20 +1,21 @@
-
 import cv2
 import os
+
+dataset_path = r"C:\Users\Bryan\Desktop\EE4208_DATASET"
+cascade_classifier_path = r"C:\Users\Bryan\Desktop\EE4208 Assignment 1\EE4208-Assignment\Assignment 1\haarcascade_frontalface_default.xml"
+count = 0
 
 cam = cv2.VideoCapture(0)
 cam.set(3, 640) # set video width
 cam.set(4, 480) # set video height
 
-face_detector = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+face_detector = cv2.CascadeClassifier(cascade_classifier_path)
 
 # For each person, enter one numeric face id
 face_id = input('\n enter user id end press <return> ==>  ')
 
 print("\n [INFO] Initializing face capture. Look the camera and wait ...")
 # Initialize individual sampling face count
-count = 0
-
 while(True):
 
     ret, img = cam.read()
@@ -22,12 +23,15 @@ while(True):
     faces = face_detector.detectMultiScale(gray, 1.3, 5)
 
     for (x,y,w,h) in faces:
-
-        cv2.rectangle(img, (x,y), (x+w,y+h), (255,0,0), 2)     
         count += 1
+        cv2.rectangle(img, (x,y), (x+w,y+h), (255,0,0), 2)     
+
+        # Generating filepath to save the captured images into
+        savefilepath = os.path.join(dataset_path, str(face_id) + "." + "1" + "." + str(count) + ".jpg")
+        print(savefilepath)
 
         # Save the captured image into the datasets folder
-        cv2.imwrite("dataset/User." + str(face_id) + '.' + str(count) + ".jpg", gray[y:y+h,x:x+w])
+        cv2.imwrite(savefilepath, gray[y:y+h,x:x+w])
 
         cv2.imshow('image', img)
 
